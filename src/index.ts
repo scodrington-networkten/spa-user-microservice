@@ -51,6 +51,12 @@ app.get("/notes", async (req, res) => {
     res.json(notes);
 });
 
+app.post("/notes/new", async (req, res) => {
+    res.json({
+        message: "added new note"
+    });
+})
+
 app.post("/users", async (req, res) => {
 
     const {email, name} = req.body;
