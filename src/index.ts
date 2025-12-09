@@ -22,14 +22,15 @@ const prisma = new PrismaClient({adapter});
 
 app.post("/notes", async (req, res) => {
 
-    const {title, content} = req.body;
-    console.log(title, content);
+    const {title, content, user_id} = req.body;
+    console.log("Creating note for user");
+    console.log(title, content, user_id);
 
     const note = await prisma.note.create({
         data: {
             title: title,
             content: content,
-            user: {connect: {id: 1}},
+            user: {connect: {id: user_id}},
         }
     });
 
@@ -51,11 +52,6 @@ app.get("/notes", async (req, res) => {
     res.json(notes);
 });
 
-app.post("/notes/new", async (req, res) => {
-    res.json({
-        message: "added new note"
-    });
-})
 
 app.post("/users", async (req, res) => {
 
@@ -78,6 +74,18 @@ app.get('/users', async (req, res) => {
     return res.json(collection);
 
 })
+
+app.get('/users/:id', async (req, res) => {
+
+    const userId = Number(req.params.id);
+    const user = await prisma.user.findUnique({
+        where: {id: userId},
+        include: {notes: true}
+    });
+
+    return res.json(user);
+})
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
