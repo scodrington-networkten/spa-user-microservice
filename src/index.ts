@@ -96,6 +96,39 @@ app.get('/users/:id', async (req, res) => {
     return res.json(user);
 })
 
+/**
+ * Delete a given note
+ * Checks if note belongs to user and deletes it
+ */
+app.delete('/notes/:id', async (req, res) => {
+
+    const noteId = Number(req.params.id);
+    const userId = req.body.user.id;
+
+    const result = await prisma.note.deleteMany({
+        where: {
+            id: noteId, userId: userId
+        },
+    });
+
+    //no matching note for user, couldnt delete
+    if (result.count === 0) {
+        const data = {
+            status: 'error',
+            message: "Note could not be found for user"
+        };
+        return res.json(data);
+    }
+
+    //return success after deletion
+    const data = {
+        status: 'success',
+        message: "Successfully deleted note for user"
+    }
+    return res.json(data);
+
+})
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
