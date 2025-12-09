@@ -47,11 +47,6 @@ async function testPrisma() {
     }
 }
 
-app.get("/notes", async (req, res) => {
-    const notes = await prisma.note.findMany();
-    res.json(notes);
-});
-
 
 app.post("/users", async (req, res) => {
 
@@ -66,6 +61,18 @@ app.post("/users", async (req, res) => {
     res.json(user);
 });
 
+/**
+ * Get a list of all notes
+ */
+app.get("/notes", async (req, res) => {
+    const notes = await prisma.note.findMany();
+    res.json(notes);
+});
+
+
+/**
+ * Get a list of all users
+ */
 app.get('/users', async (req, res) => {
 
     const collection = await prisma.user.findMany({
@@ -75,6 +82,9 @@ app.get('/users', async (req, res) => {
 
 })
 
+/**
+ * Get a single user via its ID
+ */
 app.get('/users/:id', async (req, res) => {
 
     const userId = Number(req.params.id);
