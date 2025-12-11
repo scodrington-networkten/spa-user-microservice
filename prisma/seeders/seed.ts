@@ -31,7 +31,17 @@ async function seed() {
             }
         })
 
+
+
         //create notes
+        await prisma.note.create({
+            data: {
+                title: "GO dance",
+                content: "go and do a spin",
+                userId: user.id
+            }
+        })
+
         await prisma.note.create({
             data: {
                 title: "Go to the shops",

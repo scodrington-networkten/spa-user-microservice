@@ -83,6 +83,22 @@ app.get('/users', async (req, res) => {
 })
 
 /**
+ * first user
+ */
+app.get('/users/first', async (req, res) => {
+
+    const user = await prisma.user.findFirst({
+        include: {notes: true}
+    });
+
+    const data = JSON.parse(JSON.stringify(user));
+    console.log(data)
+    return res.json(data);
+
+});
+
+
+/**
  * Get a single user via its ID
  */
 app.get('/users/:id', async (req, res) => {
@@ -98,6 +114,7 @@ app.get('/users/:id', async (req, res) => {
     console.log(data)
     return res.json(data);
 })
+
 
 /**
  * Delete a given note
