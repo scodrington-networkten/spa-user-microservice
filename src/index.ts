@@ -93,7 +93,10 @@ app.get('/users/:id', async (req, res) => {
         include: {notes: true}
     });
 
-    return res.json(user);
+    const data = JSON.parse(JSON.stringify(user));
+    console.log(userId);
+    console.log(data)
+    return res.json(data);
 })
 
 /**
